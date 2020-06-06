@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	    <div class="container">
+	       <div class="alert alert-success">
+	         <h4>
+	            Welcome <span th:text="${name}"></span>
+	         </h4>
+	         <p>Here you can set up your profile and view your purchase history</p>
+	         <p th:if="${edited}"><strong>Your account is updated!</strong></p>
+	         <p th:if="${changed}"><strong>The changes have been made successfully!</strong></p>
+	         <p th:if="${passChanged}"><strong >Password have been changed successfully</strong></p>
+	         
+	       </div>
+	       <div class="row">
+	          <div class="col-lg-4">
+	             <div class="jumbotron">
+	                <div class="row">
+	                   <div class="col-lg-6">
+	                       <h5>User Info</h5>
+	                   </div>
+	                   <div class="col-lg-6">
+	                       <a th:href="@{/myAccount/editAccount(id=${user.id})}" class="float-right" title="Edit"><i class="fas fa-pen"></i></a>
+	                   </div>
+	                </div>
+	                <p th:text="${name}"></p>
+	                <p th:text="${email}"></p>
+	             </div>
+	          </div>
+	           <div class="col-lg-4">
+	             <div class="jumbotron">
+	                <div class="row">
+	                   <div class="col-lg-6">
+	                       <h5>Address</h5>
+	                   </div>
+	                   <div class="col-lg-6">
+	                       <a th:href="@{/myAccount/addressList}" class="float-right" title="Edit Address"><i class="fas fa-pen"></i></a>
+	                   </div>
+	                </div>
+	                <div th:if="${not emptyList}">
+	                   <p th:text="${defaultAddress.street}"></p>
+	                   <p th:text="${defaultAddress.city}"></p>
+	                   <p th:text="${defaultAddress.state}"></p>
+	                   <p th:text="${defaultAddress.zipCode}"></p>
+	                </div>
+	             </div>
+	          </div>
+	          <div class="col-lg-4">
+	             <div class="jumbotron">
+	                <div class="row">
+	                   <div class="col-lg-10">
+	                       <h5>Change Password</h5>
+	                   </div>
+	                   <div class="col-lg-2">
+	                       <a th:href="@{/myAccount/changePassword(id = ${user.id})}" class="float-right" title="Change Password"><i class="fas fa-pen"></i></a>
+	                   </div>
+	                </div>
+	             </div>
+	          </div>
+	       </div>
+	       <h5>Order History</h5>
+	       <hr/>
+	       <div th:if="${emptyOrders}" class="alert alert-warning"><h6 class="text text-center">There are no previous orders</h6></div>
+	       <table th:unless="${emptyOrders}" class="table table-bordered table-striped" >
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Order Date</th>
+						<th>Order Total</th>
+						<th>View Order Items</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+				    <tr th:each="order : ${orders}">
+				        
+					    <td th:text="${order.id}"></td>
+						<td th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+						<td th:text=" '$' + ${#numbers.formatDecimal(order.orderTotal, 0, 'COMMA', 2, 'POINT')}"></td>
+						<td><a th:href="@{/myAccount/viewOrderItems(id = ${order.id})}" class="btn btn-outline-success btn-sm" title="View Items">
+						<i class="fas fa-info-circle"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+	    </div>
+
+	<div th:replace="common/header :: script"></div>
+    <div th:replace="common/footer :: footer"></div>
+</body>
+</html>	

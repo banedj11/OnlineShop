@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-lg-8">
+				<h6>Product</h6>
+			</div>
+			<div class="col-lg-2">
+				<h6>Price</h6>
+			</div>
+			<div class="col-lg-2">
+				<h6>Quantity</h6>
+			</div>
+		</div>
+		<hr>
+		<div class="row" th:each="cartItem : ${cartItems}">
+			<hr>
+			<div class="col-lg-2">
+				<a th:href="@{/productDetail(id = ${cartItem.product.id})}"> <img class="img-fluid"
+					th:src="@{/image/product/} + ${cartItem.product.id} + '.png' "
+					alt="prewiew" width="120" height="80">
+				</a>
+			</div>
+			<div class="col-lg-6">
+				<div style="margin-left: 50px;">
+					<a th:href="@{/productDetails?id=} + ${cartItem.product.id}">
+						<span th:text="${cartItem.product.name}"></span>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<h5 style="font-size: large;" th:text=" '$' + ${#numbers.formatDecimal(cartItem.totalPrice, 0, 'COMMA', 2, 'POINT')}"></h5>
+			</div>
+			<div class="col-lg-2">
+				<h5 style="font-size: large;" th:text="${cartItem.quantity}"></h5>
+			</div>
+		</div>
+		<hr>
+		<a th:href="@{/myAccount/viewAccount}" class="btn btn-primary">Back to my account</a>
+
+	</div>
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
+</body>
+</html>

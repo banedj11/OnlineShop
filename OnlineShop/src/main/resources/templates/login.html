@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	   <div class="container">
+	     
+	     <div class="row">
+	        <div class="justify-content-center col-lg-8 offset-lg-2">
+	           <h4 class="text text-center"><strong>Login</strong></h4><hr>
+	           <div class="alert alert-danger" th:if="${param.error}">
+					    <h4 class="text text-center">Invalid email or password!</h4>
+				</div>
+	           <form th:action="@{/login}" method="post">
+	              
+	              <div class="form-group">
+	                  <label for="email">Email*</label>
+	                  <input type="text" id="email" class="form-control" name="username"/>
+	              </div>
+	              <div class="form-group">
+	                  <label for="password">Password*</label>
+	                  <input type="password" id="password" class="form-control" name="password"/>
+	              </div>
+	              <div class="form-group form-check">
+                       <input type="checkbox" class="form-check-input" id="rememberMe">
+                       <label class="form-check-label" for="rememberMe">Remember me</label>
+                  </div>
+                  
+	              <button type="submit" class="btn btn-info btn-block" >Login</button><br/>
+	              
+                  <a th:href="@{/user/registerUser}">Don't have an account? Register here!</a>
+                 
+	           </form>
+	        </div>
+	     </div>
+	   </div>
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	    <div class="container">
+	       <div>
+	          <div class="row">
+		    <div class="justify-content-center col-lg-9 offset-lg-1">
+		        <h4>List Of Addresses</h4>
+		        <hr>
+		        <div class="alert alert-success" th:if="${addressCreated}"><h4 class="text text-center">New address have been added!</h4></div>
+		        <div class="alert alert-warning" th:if="${addressUpdated}"><h4 class="text text-center">Address have been updated successfully!</h4></div>
+		        <div class="alert alert-danger" th:if="${deleted}"><h4 class="text text-center">Address have been deleted successfully!</h4></div>
+		        <a th:href="@{/myAccount/createAddress}" class="btn btn-success float-right" style="margin-bottom: 5px;">Add New Address</a>
+                   <form th:action="@{/myAccount/setDefaultAddress}" method="post">
+                   <table class="table table-bordered table-striped" >
+					<thead>
+						<tr>
+							<th>Default</th>
+							<th>Address</th>
+							<th>Edit</th>
+							<th>Delete</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						    <tr th:each="address : ${addresses}">
+							<td><input type="radio" name="defaultAddressId"
+							 th:value="${address.id}"
+							 th:checked="${address.defaultAddress}"/>
+							 </td>
+							<td th:text="${address.street} + ', ' + ${address.city} + ', ' + ${address.state}"></td>
+							<td><a th:href="@{/myAccount/updateAddress(id = ${address.id})}" class="btn btn-outline-primary btn-sm"><i class="fas fa-pen"></i></a></td>
+							<td><a th:href="@{/myAccount/deleteAddress(id = ${address.id})}" id="deleteBtn" data-toggle="modal"
+					        data-target="#deleteModal" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                
+			</div>
+		</div>
+	       </div>
+	    </div>
+	  <!-- Delete Modal -->
+	  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+		aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Delete Address</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				     Are you sure that you want to delete this Address?
+				</div>
+				<div class="modal-footer">
+					<a href="" id="confirmDeleteButton" class="btn btn-danger">Yes</a>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	  </div>
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
+	<script>
+	$('document').ready(function(){ 
+		
+		$('.table #deleteBtn').on('click', function(){
+			
+			event.preventDefault();
+			var href = $(this).attr('href');
+			$('#confirmDeleteButton').attr('href', href);
+			$('#deleteModal').modal();
+		})
+	});
+	</script>
+</body>
+</html>	

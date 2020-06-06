@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	   <div class="container">
+	     
+	     <div class="row">
+	        <div class="justify-content-center col-lg-8 offset-lg-2">
+	           <h4 class="text text-center"><strong>Edit Account</strong></h4><hr>
+	           <div class="alert alert-warning" th:if="${userExists}"><h4 class="text text-center">This email already exists</h4></div>
+	           <form th:action="@{/myAccount/editAccount}" th:object="${user}" method="post">
+	              <input type="hidden" id="id" name="id" th:value="${user.id}"/>
+	              <input type="hidden" id="password" name="password" th:value="${user.password}"/>
+	              <div class="form-row">
+	                 <div class="form-group col-lg-6">
+	                    <label for="firstName">First Name*</label>
+	                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}" placeholder="First Name"/>
+	                    <div class="text text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+	                 </div>
+	                 <div class="form-group col-lg-6">
+	                    <label for="lastName">Last Name*</label>
+	                    <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}" placeholder="Last Name"/>
+	                    <div class="text text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+	                 </div>
+	              </div>
+	              <div class="form-group">
+	                  <label for="email">Email*</label>
+	                  <input type="email" id="email" class="form-control" name="email" th:value="${user.email}"/>
+	                  <div class="text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+	              </div>
+	              <div class="form-group">
+	                  <label for="mobile">Mobile Number*</label>
+	                  <input type="text" id="mobile" class="form-control" name="mobile" th:value="${user.mobile}"/>
+	                  <div class="text text-danger" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></div>
+	              </div>
+	              <button type="submit" class="btn btn-info btn-block" >Save</button>
+	              <a th:href="@{/myAccount/viewAccount}" class="btn btn-danger btn-block">Cancel</a>
+	           </form>
+	        </div>
+	     </div>
+	   </div>
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
+</body>
+</html>

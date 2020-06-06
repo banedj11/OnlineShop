@@ -1,0 +1,71 @@
+<!doctype html >
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous" />
+ 
+<link rel="stylesheet" href="/css/style.css" />
+<style>
+  table {
+     border-collapse: collapse;
+  }
+  
+  table, th, td {
+     border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+  <p>Dear <span th:text="${user.firstName}"></span>,</p>
+  <br/>
+  <p>Thank you for shopping from our Online Shop.</p>
+  <p>Your order number is #<span th:text="${order.id}"></span></p>
+  <h2>Order details for purchase #<span th:text="${order.id}"></span></h2>
+  <hr/>
+  
+  <table>
+     <tr>
+        <th>Shipping Address</th>
+        <th>Payment Information</th>
+     </tr>
+     <tr>
+        <td>
+            <span th:text="${order.street}"></span><br/>
+            <span th:text="${order.city}"></span><br/>
+            <span th:text="${order.state}"></span><br/>
+            <span th:text="${order.zipCode}"></span><br/>
+        </td>
+        <td><span th:text="${order.orderMethod}"></span><br/></td>
+     </tr>
+  </table>
+  <h3><strong>Order Summary</strong></h3>
+  <table>
+     <thead>
+         <tr>
+           <td><strong>Item Name</strong></td>
+           <td class="text-center"><strong>Item Price</strong></td>
+           <td class="text-center"><strong>Item Quantity</strong></td>
+           <td class="text-right"><strong>Total Price</strong></td>
+         </tr>
+     </thead>
+     <tbody>
+         <tr th:each="cartItem : ${cartItems}">
+            <td><span data-th-text="${cartItem.product.name}"></span></td>
+            <td class="text-center" data-th-text="${cartItem.product.price}"></td>
+            <td class="text-center" data-th-text="${cartItem.quantity}"></td>
+            <td class="text-right" data-th-text="${cartItem.totalPrice}"></td>
+         </tr>
+         <tr>
+            <td class="highrow"></td>
+            <td class="highrow"></td>
+            <td class="highrow text-center"><strong>Total</strong></td>
+            <td class="highrow text-right" data-th-text="${order.orderTotal}"></td>
+         </tr>
+     </tbody>
+  </table>
+</body>
+</html>

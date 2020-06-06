@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	<div class="container">
+		<form th:action="@{/checkOut}" id="checkOutForm" method="post">
+			<div class="row">
+
+				<!-- Left panel -->
+				<div class="col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<button type="submit" class="btn btn-primary btn-block">Place your order</button>
+							<h4>Order Summary</h4>
+							<div class="row">
+								<input type="hidden" name="id" th:value="${cart.id}">
+								<div class="col-lg-6 float-left">
+									<h4 style="color: darkred;">Total Price:</h4>
+								</div>
+								<div class="col-lg-6 float-right">
+									<h4>
+										<span th:text=" '$' + ${#numbers.formatDecimal(cart.grandTotal, 0, 'COMMA', 2, 'POINT')}"></span>
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+						Shipping and handling haven't applied.
+					   </div>
+					</div>
+				</div>
+
+				<!-- Address info -->
+				<div class="col-lg-8">
+				    <div class="alert alert-warning" th:if="${emptyAddressList}">
+					    <h5 class="text text-center">Address list is empty, you can create your address <a th:href="@{/myAccount/createAddress}">here</a>.</h5>
+					</div>
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">1.Address</h4>
+						</div>
+						<div class="card-body">
+							<table class="table" th:if="${not emptyAddressList}">
+								<thead>
+									<tr>
+										<th>Available Shipping Address</th>
+										<th>Operations</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="address : ${addreses}">
+										<td th:text="${address.street} + ', ' + ${address.city} + ', ' + ${address.state}"></td>
+										<td><a th:href="@{/setShippingAddress(userAddressId=${address.id})}">Use this address</a></td>
+										
+									</tr>
+								</tbody>
+							</table>
+
+                            <input type="hidden" name="addressId" th:value="${address.id}">
+							<div class="form-group">
+							        <label for="shippingStreet">Street*</label> <input type="text"
+									class="form-control" id="shippingStreet" placeholder="Street"
+									name="street" th:value="${address.street}" required="required"/>
+							</div>
+							<div class="form-group">
+								<label for="city">City*</label> <input type="text"
+									class="form-control" id="city" name="city"
+									th:value="${address.city}" placeholder="City" required="required"/>
+							</div>
+							<div class="form-group">
+								<label for="state">State*</label> <input type="text" id="state"
+									class="form-control" name="state" th:value="${address.state}"
+									placeholder="State" required="required"/>
+									
+							</div>
+							<div class="form-group">
+								<label for="zipCode">Zip Code*</label> <input type="text"
+									id="zipCode" class="form-control" name="zipCode"
+									th:value="${address.zipCode}" placeholder="Zip Code" required="required"/>
+							</div>
+						</div>
+					</div>
+					<br />
+
+					<!-- Payment info -->
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">2.Payment Information</h4>
+						</div>
+						<div class="card-body">
+							<div class="form-check">
+								<input class="form-check-input"  type="radio" name="orderMethod" id="exampleRadios1" value="Payment on delivery" checked> 
+								<label class="form-check-label" for="exampleRadios1"> 
+								<strong>Payment on delivery</strong><br> 
+								   Payment is made in cash, to courier service upon delivery.
+								</label>
+							</div>
+							<br />
+							<div class="form-check">
+								<input class="form-check-input"  type="radio" name="orderMethod" id="exampleRadios2" value="Payment with credit card">
+								<label class="form-check-label" for="exampleRadios2"> 
+								<strong>Payment with credit card</strong>
+								<br /> 
+								    Payment security is guaranteed. The
+									complete card payment process takes place through the bank's
+									online service. Online Shop does not have access to the data
+									from your card at any time.
+								</label>
+							</div>
+						</div>
+					</div>
+					<br />
+					<!-- Review Items -->
+					<div class="card">
+						<div class="card-header" id="headingThree">
+							<h4 class="card-title">3.Review Items</h4>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-lg-8">
+									<h6>Product</h6>
+								</div>
+								<div class="col-lg-2">
+									<h6>Price</h6>
+								</div>
+								<div class="col-lg-2">
+									<h6>Quantity</h6>
+								</div>
+							</div>
+							<hr>
+							<div class="row" th:each="cartItem : ${cartItems}">
+								<hr>
+								<div class="col-lg-2">
+									<a th:href="@{/productDetail(id = ${cartItem.product.id})}">
+										<img class="img-fluid"
+										th:src="@{/image/product/} + ${cartItem.product.id} + '.png' "
+										alt="prewiew" width="120" height="80">
+									</a>
+								</div>
+								<div class="col-lg-6">
+									<div style="margin-left: 50px;">
+										<a th:href="@{/productDetails?id=} + ${cartItem.product.id}">
+											<span th:text="${cartItem.product.name}"></span>
+										</a>
+									</div>
+								</div>
+								<div class="col-lg-2">
+									<h5 style="font-size: large;" th:text=" '$' + ${#numbers.formatDecimal(cartItem.totalPrice, 0, 'COMMA', 2, 'POINT')}"></h5>
+								</div>
+								<div class="col-lg-2">
+									<h5 style="font-size: large;" th:text="${cartItem.quantity}"></h5>
+								</div>
+							</div>
+							<hr />
+							
+						</div>
+					</div>
+					<h4 class="col-lg-12 float-right">
+						<br /> <br />
+						<button type="submit" class="btn btn-primary btn-block">Place your order</button>
+					</h4>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:replace="common/header :: script"></div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+   
+    <!-- Address validation -->
+    <script>
+        $(function(){
+        	
+        	$("#checkOutForm").validate({
+        		
+        		rules: {
+        			street: {
+        				required: true
+        			},
+        	        city: {
+        	        	required: true
+        	        },
+        	        state: {
+        	        	required: true
+        	        },
+        	        zipCode: {
+        	        	required: true
+        	        }
+        	   },
+        	    messages: {
+      		        street: {
+     				    required: "Please enter street"
+     			    },
+     	            city: {
+     	        	    required: "Please enter city"
+     	            },
+     	            state: {
+     	        	    required: "Please enter state"
+     	            },
+     	            zipCode: {
+     	        	    required: "Please enter zipCode"
+     	            }
+      	      }
+        	});
+        });
+    </script>
+    <div th:replace="common/footer :: footer"></div>
+</body>
+</html>

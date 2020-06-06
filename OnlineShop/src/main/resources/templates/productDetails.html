@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="common/header :: header">
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:replace="common/header :: navbar"></div>
+	<div class="container">
+		<div th:if="${notEnoughInStock}" class="alert alert-warning">
+			Some of products don't have enough stock, please update quantity!</div>
+		<div th:if="${productAddSuccess}" class="alert alert-success">
+			Product successfully added in cart!</div>
+		<form th:action="@{/shoppingCart/addProduct}" method="post">
+			<input type="hidden" th:field="*{product.id}" />
+            <div class="row">
+				<div class="col-lg-5 offset-lg-1">
+					<img alt="" th:src="@{/image/product/} + ${product.id} + '.png'" width="370" height="370">
+				</div>
+				<div class="col-lg-6">
+					<h3 th:text="${product.name}">Product Name</h3>
+					<hr />
+                    <div class="row">
+						<div class="col-lg-4">
+							<h4> Price: <span th:text=" '$' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></span> </h4>
+							<span>Qty:</span> 
+							<select name="qty">
+								<option th:each="qty : ${qtyList}" th:value="${qty}" th:text="${qty}"></option>
+							</select>
+						</div>
+						<div class="col-lg-8">
+							<h4 th:if="*{product.inStockNumber&gt;10}" style="color: green;'">In Stock</h4>
+							<h4 th:if="*{product.inStockNumber&lt;11 and product.inStockNumber&gt;0}" style="color: green;'">
+								Only <span th:text="${product.inStockNumber}">In Stock</span>
+							</h4>
+							<h4 th:if="*{product.inStockNumber == 0}" style="color: darkred;'">Unavailable</h4>
+							<button type="submit" class="btn btn-warning">Add to Cart</button>
+						</div>
+					</div>
+                    <hr>
+					<p> <strong>Description: </strong><span th:text="${product.description}"></span> </p>
+					<p> <strong>Color: </strong><span th:text="${product.color}"></span> </p>
+					<hr>
+					<a style="margin-top:20px;" th:href="@{/}" class="btn btn-primary">Continue Shopping</a>
+				</div>
+			</div>
+         </form>
+	</div>
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
+</body>
+</html>
