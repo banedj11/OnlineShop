@@ -6,8 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.baka.models.Address;
-import com.baka.models.Cart;
-import com.baka.models.Product;
 import com.baka.models.Role;
 import com.baka.models.User;
 import com.baka.services.AddressService;
