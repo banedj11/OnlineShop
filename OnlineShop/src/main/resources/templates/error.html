@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: header">
 </head>
 <body>
 
+     <div class="container">
+         <div class="jumbotron" style="margin-top: 30px;">
+             <h3>There was an error |<span th:text="${message}"></span>| <span class="text text-danger" th:text="${status}"></span></h3><br/>
+             <a th:href="@{/}" class="btn btn-primary">Home page</a>
+         </div>
+     </div>
+
+	<div th:replace="common/header :: script"></div>
+	<div th:replace="common/footer :: footer"></div>
 </body>
 </html>
